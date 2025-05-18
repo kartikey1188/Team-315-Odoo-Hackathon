@@ -1,0 +1,12 @@
+services:
+  team_135_backend:
+    image: infinity81/team-315-backend-odoo:v1
+    ports:
+      - 5000:5000
+    env_file:
+      - .env # Make sure the .env file is in the same directory (soft-engg-project-jan-2025-se-Jan-11 in this case) as this docker-compose file to run the container successfully
+  
+# run the following command to start the container (from the directory where the docker-compose file is located):
+
+# docker compose -f docker_compose.yaml up -d
+

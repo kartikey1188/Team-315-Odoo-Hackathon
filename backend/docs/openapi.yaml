@@ -12,7 +12,7 @@ info:
   version: "1.0.0"
 
 servers:
-  - url: "https://team-315-odoo-hackathon.onrender.com"
+  - url: "https://team-315-odoo-hackathon-3.onrender.com/"
   - url: "http://localhost:5000"
 
 tags:
