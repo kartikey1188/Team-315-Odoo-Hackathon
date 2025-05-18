@@ -1,49 +1,95 @@
-<script setup>
-import { RouterLink, RouterView } from 'vue-router'
-import NavBar from './components/NavBar.vue'
-import FooterSection from './components/FooterSection.vue'
-</script>
-
 <template>
-  <div class="app-container">
-    <NavBar />
-    <main>
-      <RouterView />
-    </main>
-    <FooterSection />
+  <div id="app">
+    <nav v-if="$route.meta.requiresAuth">
+      <div class="nav-container">
+        <div class="logo">SynergySphere</div>
+        <div class="nav-links">
+          <router-link to="/projects">Projects</router-link>
+          <router-link to="/my-tasks">My Tasks</router-link>
+          <a href="#" @click.prevent="logout">Logout</a>
+        </div>
+      </div>
+    </nav>
+    <router-view/>
   </div>
 </template>
 
+<script>
+export default {
+  name: 'App',
+  methods: {
+    logout() {
+      // Clear any stored authentication
+      localStorage.removeItem('user');
+      // Redirect to login page
+      this.$router.push('/login');
+    }
+  }
+}
+</script>
+
 <style>
 * {
-  box-sizing: border-box;
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
 }
 
 body {
   font-family: 'Arial', sans-serif;
-  line-height: 1.6;
+  background-color: #f5f5f5;
   color: #333;
 }
 
-.app-container {
-  display: flex;
-  flex-direction: column;
+#app {
   min-height: 100vh;
 }
 
-main {
-  flex: 1;
-  padding: 2rem;
+nav {
+  background-color: #4a6274;
+  padding: 15px 0;
+  color: white;
 }
 
-a {
+.nav-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+}
+
+.logo {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.nav-links {
+  display: flex;
+  gap: 20px;
+}
+
+.nav-links a {
+  color: white;
   text-decoration: none;
-  color: #333;
+  font-weight: 500;
+  transition: color 0.3s;
 }
 
-button {
-  cursor: pointer;
+.nav-links a:hover {
+  color: #afd3e2;
 }
-</style>
+
+.router-link-active {
+  color: #afd3e2 !important;
+  border-bottom: 2px solid #afd3e2;
+  padding-bottom: 3px;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+</style> 

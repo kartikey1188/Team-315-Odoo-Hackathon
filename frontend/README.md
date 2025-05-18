@@ -1,29 +1,46 @@
-# frontend
+# SynergySphere Frontend
 
-This template should help get you started developing with Vue 3 in Vite.
+This is the frontend application for SynergySphere, an advanced team collaboration platform built with Vue 3.
 
-## Recommended IDE Setup
+## Features
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
-
-## Customize configuration
-
-See [Vite Configuration Reference](https://vite.dev/config/).
+- User authentication (sign up and login)
+- Project management (create, view, edit, delete projects)
+- Task management (create, view, edit, delete tasks)
+- My Tasks view to see tasks assigned to you
+- Responsive desktop layout
 
 ## Project Setup
 
-```sh
+### Install dependencies
+```
 npm install
 ```
 
-### Compile and Hot-Reload for Development
-
-```sh
-npm run dev
+### Compile and hot-reload for development
+```
+npm run serve
 ```
 
-### Compile and Minify for Production
-
-```sh
+### Compile and minify for production
+```
 npm run build
 ```
+
+### Run linter
+```
+npm run lint
+```
+
+## Backend API
+
+This frontend application connects to a Flask backend API. Make sure the backend is running at http://localhost:5000 or update the API_URL in `src/store/index.js` and `src/services/api.js` to match your backend URL.
+
+## Pages
+- Login
+- Sign Up
+- Projects (dashboard)
+- Project Tasks
+- My Tasks
+- Project Create/Edit
+- Task Create/Edit 
