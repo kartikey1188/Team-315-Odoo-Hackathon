@@ -15,4 +15,10 @@ class Config:
     DB_PATH = BASE_DIR / "data" / "app.db"
 
     SQLALCHEMY_DATABASE_URI = f"sqlite:///{DB_PATH}"
+    
+    # Email Configuration
+    SMTP_USERNAME = os.environ.get('SMTP_USERNAME')
+    SMTP_PASSWORD = os.environ.get('SMTP_PASSWORD')
+    # Whether to actually send emails (can be set to False for testing)
+    MAIL_ENABLED = os.environ.get('MAIL_ENABLED', 'True').lower() == 'true'
    

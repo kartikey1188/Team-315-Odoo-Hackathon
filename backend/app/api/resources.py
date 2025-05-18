@@ -3,7 +3,7 @@ from flask_restful import Resource, Api
 from datetime import datetime
 from app.models.models import db, Project, Task, Team, User, team_members
 from app import app
-from app.api.login_signup import token_required
+from app.api.notifications import notify_task_assignment, notify_team_addition, notify_task_status_change
 
 api = Api(app)
 
@@ -196,6 +196,10 @@ class TeamMemberResource(Resource):
         try:
             team.members.append(user)
             db.session.commit()
+            
+            # Sending notification email to the user
+            notify_team_addition(user.email, team.name)
+            
             return {'message': 'User added to team successfully'}, 200
         except Exception as e:
             return {'message': str(e)}, 500
@@ -280,6 +284,12 @@ class TaskResource(Resource):
             db.session.add(new_task)
             db.session.commit()
             
+            # Sending notification email if task is assigned to someone
+            if new_task.assignee_id:
+                assignee = User.query.get(new_task.assignee_id)
+                if assignee:
+                    notify_task_assignment(assignee.email, new_task.title, project.name)
+            
             return {
                 'id': new_task.id,
                 'title': new_task.title,
@@ -299,6 +309,8 @@ class TaskResource(Resource):
             return {'message': 'Task not found'}, 404
         
         data = request.get_json()
+        old_status = task.status
+        old_assignee_id = task.assignee_id
         
         try:
             if 'title' in data:
@@ -313,6 +325,18 @@ class TaskResource(Resource):
                 task.assignee_id = data['assignee_id']
             
             db.session.commit()
+            
+            # Sending notification if the status has changed
+            if old_status != task.status and task.assignee_id:
+                assignee = User.query.get(task.assignee_id)
+                if assignee:
+                    notify_task_status_change(assignee.email, task.title, old_status, task.status)
+            
+            # Sending notification if the task has been reassigned
+            if old_assignee_id != task.assignee_id and task.assignee_id:
+                assignee = User.query.get(task.assignee_id)
+                if assignee:
+                    notify_task_assignment(assignee.email, task.title, task.project.name)
             
             return {
                 'id': task.id,
