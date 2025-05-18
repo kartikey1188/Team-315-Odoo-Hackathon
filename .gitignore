@@ -1,0 +1,4 @@
+backend/.env
+backend/service-account.json
+backend/.venv
+
